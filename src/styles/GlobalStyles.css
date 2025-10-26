@@ -127,7 +127,6 @@ h3 {
 .cyber-panel {
     background-color: var(--dark-surface);
     border: 1px solid rgba(0, 255, 194, 0.2);
-    /* Թափանցիկ կանաչ եզրագիծ */
     padding: 20px;
     border-radius: var(--border-radius);
     box-shadow: 0 0 5px rgba(0, 255, 194, 0.5);
@@ -144,6 +143,7 @@ h3 {
 /* ==================================== */
 
 /* Փոքր Էկրաններ (Հեռախոսներ) */
+/* Փոքր Էկրաններ (Հեռախոսներ) */
 @media (max-width: 600px) {
     body {
         font-size: 15px;
@@ -153,11 +153,36 @@ h3 {
         padding: 8px 15px;
         font-size: 0.9em;
     }
-
-    /* Պրոֆիլի էջի ոճերը կգրվեն ProfilePage.jsx-ում, բայց այս գլոբալ սահմանումը կօգնի: */
 }
 
 /* Միջին Էկրաններ (Պլանշետներ) */
 @media (min-width: 601px) and (max-width: 1024px) {
-    /* Միջին չափսի կարգավորումներ */
+    body {
+        font-size: 16px;
+    }
+
+    .neon-button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+
+    .cyber-panel {
+        padding: 15px;
+    }
+}
+
+/* Մեծ Էկրաններ (Desktop) */
+@media (min-width: 1025px) {
+    body {
+        font-size: 18px;
+    }
+
+    .neon-button {
+        padding: 12px 24px;
+        font-size: 1.1em;
+    }
+
+    .cyber-panel {
+        padding: 25px;
+    }
 }
