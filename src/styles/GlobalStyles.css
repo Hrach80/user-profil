@@ -1,15 +1,31 @@
-/* src/styles/GlobalStyles.css */
-
+/* ==================================== */
+/* 1. ԳԼՈԲԱԼ ՓՈՓՈԽԱԿԱՆՆԵՐ (Թեմա) */
+/* ==================================== */
 :root {
+    /* Կիբեր Գույներ */
+    --neon-green: #00ffc2;
+    --neon-blue: #00bfff;
+    --neon-pink: #ff0077;
+
+    /* Ֆոնի Գույներ */
     --dark-bg: #121212;
-    --neon-blue: #00ffff;
-    --neon-pink: #ffa200;
-    --neon-green: #39ff14;
-    --text-color: #f0f0f0;
-    --shadow-blue: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
-    --shadow-pink: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+    --dark-surface: #1e1e1e;
+    --text-color: #e0e0e0;
+    /* Բաց մոխրագույն տեքստ */
+
+    /* Էֆֆեկտներ */
+    --shadow-green: 0 0 10px var(--neon-green);
+    --shadow-blue: 0 0 10px var(--neon-blue);
+    --shadow-pink: 0 0 10px var(--neon-pink);
+    --border-radius: 8px;
+
+    /* Անցումներ */
+    --transition-speed: 0.3s;
 }
 
+/* ==================================== */
+/* 2. ԲԱԶԱՅԻՆ ՈՃԵՐ (Reset) */
+/* ==================================== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -17,42 +33,131 @@
 }
 
 body {
+    font-family: 'Consolas', 'Courier New', monospace;
+    /* Կիբեր ֆոնտ */
     background-color: var(--dark-bg);
     color: var(--text-color);
-    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
     min-height: 100vh;
+    overflow-x: hidden;
+    /* Կանխում է հորիզոնական scroll-ը */
 }
 
+a {
+    color: var(--neon-green);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--neon-blue);
+}
+
+/* Գլխագրերի ոճավորում */
 h1,
 h2,
 h3 {
-    text-shadow: var(--shadow-blue);
-    color: var(--neon-blue);
-    margin-bottom: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
-/* Նեոնային ոճի կոճակի բազային ոճ */
+/* ==================================== */
+/* 3. ԱՆԻՄԱՑԻԱՆԵՐ ԵՎ ԻՆՏԵՐԱԿՏԻՎՈՒԹՅՈՒՆ */
+/* ==================================== */
+
+/* Ֆոնի Թարթումի Անիմացիա (Օգտագործելու ենք Header-ի կամ Footer-ի վրա) */
+@keyframes neon-flicker {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    5% {
+        opacity: 0.95;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    15% {
+        opacity: 0.90;
+    }
+
+    20% {
+        opacity: 1;
+    }
+}
+
+/* Կոճակների Ընդհանուր Ոճ */
 .neon-button {
-    background: none;
-    border: 2px solid var(--neon-pink);
-    color: var(--neon-pink);
-    padding: 10px 20px;
-    font-size: 1.1em;
+    background: transparent;
     cursor: pointer;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
     text-transform: uppercase;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 0 5px var(--neon-pink), 0 0 15px var(--neon-pink), 0 0 25px var(--neon-pink), inset 0 0 5px var(--neon-pink);
+    transition: all var(--transition-speed);
+    border-radius: var(--border-radius);
+
+    /* Լռելյայն դնում ենք կանաչ նեոն */
+    color: var(--neon-green);
+    border: 2px solid var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
 }
 
 .neon-button:hover {
-    background-color: var(--neon-pink);
     color: var(--dark-bg);
-    box-shadow: 0 0 10px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 50px var(--neon-pink);
+    background-color: var(--neon-green);
+    box-shadow: 0 0 20px var(--neon-green), 0 0 40px var(--neon-green);
+    transform: translateY(-2px);
 }
 
-/* Ռեսպոնզիվության հիմնական դրույթ */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
+.neon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: none;
+    background: #333;
+    color: #999;
+    border-color: #999;
+}
+
+/* Կոմպոնենտի Ընդհանուր Կիբեր Տեսք */
+.cyber-panel {
+    background-color: var(--dark-surface);
+    border: 1px solid rgba(0, 255, 194, 0.2);
+    /* Թափանցիկ կանաչ եզրագիծ */
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 5px rgba(0, 255, 194, 0.5);
+    margin-bottom: 20px;
+}
+
+/* ==================================== */
+/* 4. ՄՈԴԱԼԻ ՈՃԵՐԻ ԹԱՐՄԱՑՈՒՄ */
+/* ==================================== */
+/* Քանի որ մոդալի ոճերը գրված են inline-ով, այստեղ ավելի շատ գլոբալ ոճեր են: */
+
+/* ==================================== */
+/* 5. ՌԵՍՊՈՆԶԻՎ ՈՃԵՐ (Responsive Media Queries) */
+/* ==================================== */
+
+/* Փոքր Էկրաններ (Հեռախոսներ) */
+@media (max-width: 600px) {
+    body {
+        font-size: 15px;
     }
+
+    .neon-button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+
+    /* Պրոֆիլի էջի ոճերը կգրվեն ProfilePage.jsx-ում, բայց այս գլոբալ սահմանումը կօգնի: */
+}
+
+/* Միջին Էկրաններ (Պլանշետներ) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    /* Միջին չափսի կարգավորումներ */
 }
