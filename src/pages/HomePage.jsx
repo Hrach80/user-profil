@@ -1,167 +1,199 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabase/supabaseClient';
 import RegistrationModal from '../components/RegistrationModal';
-
-const HRACYA_IMAGE_PATH = '/hrach.png';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------
-// ՈՃԵՐ
+// ԿԱՐԵՎՈՐ. Պատկերի Ճանապարհը
+// ----------------------------------------------------
+const HRACYA_IMAGE_PATH = '/hrach.png'; // ԿԱՐԳԱՎՈՐԵՔ: Ենթադրում եմ, որ նկարը այս ճանապարհով է
+
+// ----------------------------------------------------
+// Ոճեր (Styles)
 // ----------------------------------------------------
 
-const pageStyle = {
+// Հիմնական էջի ոճ (Ամբողջ էկրան, կենտրոնացված)
+const homePageStyle = {
+    minHeight: '100vh',
+    backgroundColor: 'var(--dark-bg, #0a0a0a)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: '100vh',
     padding: '20px',
 };
 
-const contentContainerStyle = {
+// Կենտրոնական բլոկի ոճը
+const mainContainerStyle = {
     display: 'flex',
-    flexWrap: 'wrap', 
-    gap: '40px',
-    maxWidth: '1000px',
+    backgroundColor: 'var(--dark-surface, #1e1e1e)',
+    padding: '40px',
+    borderRadius: 'var(--border-radius, 10px)',
+    maxWidth: '900px',
     width: '100%',
-
-    backgroundColor: 'var(--dark-surface)',
-    borderRadius: 'var(--border-radius)',
-    padding: '30px',
-    boxShadow: '0 0 30px rgba(0, 191, 255, 0.4), 0 0 60px rgba(0, 191, 255, 0.2)',
-    border: '2px solid var(--neon-blue)',
-    transition: 'box-shadow 0.5s ease-in-out',
+    boxShadow: '0 0 20px rgba(0, 191, 255, 0.4), 0 0 40px rgba(0, 191, 255, 0.2)', // Ընդգծված նեոնային շրջանակ
+    border: '2px solid var(--neon-blue, #00bfff)',
 };
 
-const imageContainerStyle = {
-    flex: 1,
-    background: 'linear-gradient(45deg, rgba(0, 255, 194, 0.05), rgba(0, 191, 255, 0.05))',
-    padding: '15px',
-    borderRadius: 'var(--border-radius)',
+// Ձախ մաս (Նկարը)
+const imageSectionStyle = {
+    flex: '1 1 300px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    textAlign: 'center',
+    marginRight: '40px',
 };
 
 const imageStyle = {
-    width: '100%',
+    width: '280px',
     height: 'auto',
-    borderRadius: '10px',
-    boxShadow: '0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink)',
-    border: '2px solid var(--neon-pink)',
-    transition: 'transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out',
-    maxWidth: '350px',
+    borderRadius: '8px',
+    objectFit: 'cover',
+    boxShadow: '0 0 10px var(--neon-green, #39ff14), 0 0 20px var(--neon-green, #39ff14)', // Նեոնային շրջանակ նկարի շուրջ
+    border: '3px solid var(--neon-green, #39ff14)',
 };
 
-const modalSectionStyle = {
-    flex: 1,
+const imageTextStyle = {
+    color: 'var(--neon-blue, #00bfff)',
+    marginTop: '15px',
+    fontSize: '0.9em',
+};
+
+// Աջ մաս (Տեքստը և Կոճակը)
+const textSectionStyle = {
+    flex: '1 1 400px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
     textAlign: 'center',
-    padding: '20px',
+    color: 'var(--text-color, #f0f0f0)',
+};
+
+const headerStyle = {
+    fontSize: '2em',
+    marginBottom: '20px',
+    color: 'var(--neon-green, #39ff14)',
+    textShadow: '0 0 5px var(--neon-green, #39ff14)',
 };
 
 // ----------------------------------------------------
-// CSS ԻՆՏԵՐԱԿՏԻՎՈՒԹՅԱՆ և ՌԵՍՊՈՆՍԻՎՈՒԹՅԱՆ ԿԱՆՈՆՆԵՐ
+// ՌԵՍՊՈՆՍԻՎ ՈՃԵՐ (CSS ՏՈՂԵՐՈՎ)
 // ----------------------------------------------------
 
-const InteractiveStyles = `
-    /* ... Hover ազդեցությունները ... */
-    .content-container:hover {
-        box-shadow: 0 0 40px var(--neon-blue), 0 0 80px rgba(0, 191, 255, 0.4);
-    }
-    .hrach-image {
-        transform: scale(1);
-    }
-    .hrach-image:hover {
-        transform: scale(1.03) rotate(1deg);
-        box-shadow: 0 0 15px var(--neon-pink), 0 0 35px var(--neon-pink), 0 0 50px rgba(255, 0, 119, 0.6);
-        cursor: pointer;
-    }
-
-    /* ՌԵՍՊՈՆՍԻՎ ՈՃԵՐ - ՈՒՂՂՈՒՄ */
-    /* Լռելյայն Flex Direction մեծ էկրանների համար */
-    .content-container {
-        flex-direction: row; 
-    }
-
-    @media (max-width: 900px) {
-        .content-container {
-            /* ԿԱՐԵՎՈՐ ՈՒՂՂՈՒՄ: Դառնում է ուղղահայաց */
-            flex-direction: column; 
-            align-items: center; 
-            padding: 25px;
-            width: 100%;
-            max-width: 100%;
-            margin: 0;
+const ResponsiveStyles = `
+    @media (max-width: 768px) {
+        .main-container {
+            flex-direction: column;
+            padding: 30px;
         }
-        
-        .image-container, .modal-section {
-            /* Կոնտեյներները դարձնում ենք 100% լայնություն */
-            flex: 1 1 100%; 
-            min-width: 100%; 
-            width: 100%;
+        .image-section {
+            margin-right: 0;
+            margin-bottom: 30px;
+            flex: unset;
         }
-        
-        .hrach-image {
-            max-width: 80%; 
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-    }
-    
-    @media (max-width: 500px) {
-        .content-container {
-             padding: 15px; 
-        }
-        .hrach-image {
-            max-width: 90%;
+        .image-style {
+            width: 200px;
+            height: 200px;
         }
     }
 `;
 
 // ----------------------------------------------------
-// ԿՈՄՊՈՆԵՆՏ
+// ԿՈՄՊՈՆԵՆՏԸ (Component)
 // ----------------------------------------------------
 
 const HomePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    // Ֆունկցիոնալ լոգիկան մնում է նույնը
+    useEffect(() => {
+        const checkUserSession = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    navigate('/profile');
+                }
+            } catch (error) {
+                console.error("Session check failed:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkUserSession();
+
+        const { data: authListener } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+                setLoading(false);
+                if (session) {
+                    navigate('/profile');
+                }
+            }
+        );
+
+        return () => {
+            authListener?.subscription.unsubscribe();
+        };
+    }, [navigate]);
+
+    if (loading) {
+        return <div style={{
+            textAlign: 'center',
+            paddingTop: '150px',
+            color: 'var(--neon-blue)',
+            fontSize: '2em',
+            minHeight: '100vh',
+            backgroundColor: 'var(--dark-bg, #0a0a0a)'
+        }}>Բեռնում...</div>;
+    }
 
     return (
-        <div style={pageStyle}>
-            <style>{InteractiveStyles}</style>
+        <div style={homePageStyle}>
+            {/* Ավելացնում ենք ռեսպոնսիվ ոճերը */}
+            <style>{ResponsiveStyles}</style>
 
-            <div style={contentContainerStyle} className="content-container">
-                <div style={imageContainerStyle} className="image-container">
+            <div style={mainContainerStyle} className="main-container">
+
+                {/* Ձախ մաս - Նկար */}
+                <div style={imageSectionStyle} className="image-section">
                     <img
                         src={HRACYA_IMAGE_PATH}
-                        alt="Հրաչյա"
+                        alt="Պրոֆիլի նկար"
                         style={imageStyle}
-                        className="hrach-image"
+                        className="image-style"
                     />
-                    <h3 style={{
-                        marginTop: '20px',
-                        textAlign: 'center',
-                        color: 'var(--neon-pink)',
-                        textShadow: 'var(--shadow-pink)'
-                    }}>
+                    <p style={imageTextStyle}>
                         Մուտք գործեք ինքնակենսագրությունը տեսնելու համար
-                    </h3>
+                    </p>
                 </div>
 
-                <div style={modalSectionStyle} className="modal-section">
-                    <h2 style={{ color: 'var(--neon-green)', textShadow: 'var(--shadow-green)' }}>
-                        ԲԱՐԻ ԳԱԼՈՒՍՏ!
+                {/* Աջ մաս - Տեքստ և Կոճակ */}
+                <div style={textSectionStyle}>
+                    <h2 style={headerStyle}>
+                        Բարի գալուստ!
                     </h2>
-                    <p style={{ marginBottom: '30px', color: 'var(--text-color)' }}>
-                        Գրանցվեք կամ մուտք գործեք, որպեսզի տեսնեք Հրաչյայի մանրամասն ինքնակենսագրությունը։
+                    <p style={{ marginBottom: '30px', fontSize: '1.1em' }}>
+                        Գրանցվեք կամ մուտք գործեք, որպեսզի տեսնեք Հրաչյայի զինվորական մանրամասն և ֆրոնտենդի հմտությունները։
                     </p>
-                    <button className="neon-button" onClick={() => setIsModalOpen(true)}>
-                        Գրանցվել / Մուտք
+
+                    <button
+                        className="neon-button"
+                        onClick={() => setIsModalOpen(true)}
+                        style={{
+                            border: '2px solid var(--neon-pink, #ff10f0)',
+                            color: 'var(--neon-pink, #ff10f0)',
+                            padding: '12px 30px',
+                            fontSize: '1.2em',
+                            alignSelf: 'center',
+                            width: '200px'
+                        }}
+                    >
+                        ԳՐԱՆՑՎԵԼ / ՄՈՒՏՔ
                     </button>
                 </div>
             </div>
+
             <RegistrationModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}

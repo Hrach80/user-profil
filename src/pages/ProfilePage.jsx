@@ -1,7 +1,9 @@
 import React from 'react';
 import { supabase } from '../supabase/supabaseClient';
+import { useNavigate } from 'react-router-dom'; // ԿԱՐԵՎՈՐ ԼՐԱՑՈՒՄ
 
 const HRACYA_IMAGE_PATH = '/hrach.png';
+// Ինքնակենսագրական տվյալներ
 const profileData = {
     title: "Հրաչյա Մնացականի Վաղարշակյան / Պրոֆիլի Ամփոփում",
     image: HRACYA_IMAGE_PATH,
@@ -26,7 +28,9 @@ const profileData = {
     ]
 };
 
-
+// ----------------------------------------------------
+// ՈՃԵՐ
+// ----------------------------------------------------
 
 const profilePageStyle = {
     padding: '40px 20px',
@@ -95,13 +99,23 @@ const skillBadgeHoverStyle = {
     cursor: 'pointer',
 };
 
+// ----------------------------------------------------
+// ՖՈՒՆԿՑԻԱՆԵՐ
+// ----------------------------------------------------
 
-const handleSignOut = async () => {
+// Փոփոխվել է, որպեսզի ընդունի navigate ֆունկցիան
+const handleSignOut = async (navigate) => {
     const { error } = await supabase.auth.signOut();
     if (error) {
         console.error('Սխալ մուտքից դուրս գալիս:', error.message);
+    } else {
+        navigate('/'); // Ուղղորդում դեպի գլխավոր էջը
     }
 };
+
+// ----------------------------------------------------
+// ՌԵՍՊՈՆՍԻՎ ՈՃԵՐ
+// ----------------------------------------------------
 
 const ProfileMediaStyles = `
     @media (max-width: 900px) {
@@ -117,18 +131,30 @@ const ProfileMediaStyles = `
             max-width: 150px; 
             margin-bottom: 20px;
         }
+        .profile-bio h3 {
+            text-align: center;
+        }
     }
 `;
 
+// ----------------------------------------------------
+// ԿՈՄՊՈՆԵՆՏ
+// ----------------------------------------------------
 
 const ProfilePage = () => {
     const [hoveredSkill, setHoveredSkill] = React.useState(null);
+    const navigate = useNavigate(); // ԿԱՐԵՎՈՐ. useNavigate-ի կանչը
 
     return (
         <div style={profilePageStyle}>
             <style>{ProfileMediaStyles}</style>
+
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '30px' }}>
-                <button className="neon-button" onClick={handleSignOut} style={{ border: '2px solid var(--neon-pink)' }}>
+                <button
+                    className="neon-button"
+                    onClick={() => handleSignOut(navigate)} // Անցկացնում ենք navigate-ը
+                    style={{ border: '2px solid var(--neon-pink)' }}
+                >
                     Դուրս գալ (Sign Out)
                 </button>
             </div>
@@ -144,7 +170,7 @@ const ProfilePage = () => {
                     style={profileImageStyle}
                     className="profile-image"
                 />
-                <div style={profileBioStyle}>
+                <div style={profileBioStyle} className="profile-bio">
                     {profileData.bio.map((section, index) => (
                         <div key={index} style={{ marginBottom: '25px' }}>
                             <h3 style={{ color: 'var(--neon-blue)', marginBottom: '10px' }}>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabase/supabaseClient';
+import { useNavigate } from 'react-router-dom'; // ԿԱՐԵՎՈՐ. Ավելացվել է
 
 // ----------------------------------------------------
 // Ոճերը (Styles)
@@ -11,12 +12,11 @@ const modalStyle = {
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.85)', // Ավելի մուգ ֆոն
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,
-    // Փոքր անիմացիա ֆոնի համար
     animation: 'fadeIn 0.3s ease-out',
 };
 
@@ -27,21 +27,19 @@ const modalContentStyle = {
     width: '90%',
     maxWidth: '400px',
     transition: 'box-shadow 0.3s ease-in-out',
-
-    // Մոդալի ներսի անիմացիա
     animation: 'slideIn 0.4s ease-out',
 };
 
 const inputStyle = {
     width: '100%',
-    padding: '12px', // Ավելի մեծ padding
+    padding: '12px',
     margin: '12px 0',
-    backgroundColor: 'var(--dark-bg)', // Ավելի մուգ, քան մոդալի ֆոնը
-    border: '1px solid transparent', // Լռելյայն թափանցիկ
+    backgroundColor: 'var(--dark-bg)',
+    border: '1px solid transparent',
     color: 'var(--text-color)',
     borderRadius: '5px',
     transition: 'all 0.3s ease',
-    outline: 'none', // Հեռացնում ենք լռելյայն outline-ը
+    outline: 'none',
     fontSize: '1em',
 };
 
@@ -50,7 +48,6 @@ const inputStyle = {
 // ----------------------------------------------------
 
 const ModalAnimationStyles = `
-    /* Մոդալի մուտքի անիմացիա */
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -59,23 +56,17 @@ const ModalAnimationStyles = `
         from { transform: translateY(-50px); opacity: 0; }
         to { transform: translateY(0); opacity: 1; }
     }
-
-    /* Input-ի Focus-ի Ինտերակտիվություն */
     .modal-input:focus {
         background-color: #2a2a2a;
-        /* Բաց գույնի շող, որը դինամիկ կորոշվի JS-ի միջոցով */
         box-shadow: 0 0 10px var(--input-shadow-color); 
         border-color: var(--input-shadow-color);
     }
-    
-    /* Ռեսպոնսիվություն */
     @media (max-width: 500px) {
         .modal-content {
             padding: 20px;
         }
     }
 `;
-
 
 // ----------------------------------------------------
 // Կոմպոնենտը (Component)
@@ -88,23 +79,66 @@ const RegistrationModal = ({ isOpen, onClose }) => {
     const [message, setMessage] = useState('');
     const [isSignIn, setIsSignIn] = useState(true);
 
-    // Դինամիկ գույնի սահմանում
+    const navigate = useNavigate(); // ԿԱՐԵՎՈՐ ԼՐԱՑՈՒՄ: useNavigate-ի կանչը
+
     const currentNeonColor = isSignIn ? 'var(--neon-blue)' : 'var(--neon-green)';
     const headerText = isSignIn ? 'ՄՈՒՏՔ ԳՈՐԾԵԼ' : 'ԳՐԱՆՑՎԵԼ';
     const mainButtonText = loading ? 'Բեռնվում է...' : isSignIn ? 'ՄՈՒՏՔ ԳՈՐԾԵԼ' : 'ԳՐԱՆՑՎԵԼ';
     const switchButtonText = isSignIn ? 'Չունե՞ք հաշիվ։ Գրանցվել' : 'Արդեն հաշիվ ունե՞ք։ Մուտք';
 
-    // ՖՈՒՆԿՑԻԱՆԵՐ (Մուտք, Գրանցում, Փոխել Ռեժիմը) - Չեն Փոխվում
+    // ՖՈՒՆԿՑԻԱ 1: ՄՈՒՏՔ ԳՈՐԾԵԼ (Sign In)
     const handleSignIn = async (e) => {
-        // ... (նույնն է)
-    };
-    const handleSignUp = async (e) => {
-        // ... (նույնն է)
-    };
-    const handleSubmit = isSignIn ? handleSignIn : handleSignUp;
-    // ... (օգտագործել նախորդ կոդից)
+        e.preventDefault();
+        setLoading(true);
+        setMessage('');
 
-    // ...
+        try {
+            const { error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                setMessage(`Սխալ մուտքի ժամանակ: ${error.message}`);
+            } else {
+                setMessage('Հաջող մուտք: Կուղղորդվեք պրոֆիլի էջ։');
+                onClose();
+                navigate('/profile'); // ԿԱՐԵՎՈՐ: Նավիգացիա
+            }
+        } catch (error) {
+            setMessage(`Անսպասելի սխալ: ${error.message}`);
+        } finally {
+            setLoading(false); // Ամեն դեպքում անջատում ենք loading-ը
+        }
+    };
+
+    // ՖՈՒՆԿՑԻԱ 2: ԳՐԱՆՑՎԵԼ (Sign Up)
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage('');
+
+        try {
+            const { error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                setMessage(`Սխալ գրանցման ժամանակ: ${error.message}`);
+            } else {
+                setMessage('Հաջողությամբ գրանցվեցիք։ Ստուգեք Ձեր էլ. փոստը հաստատելու համար։');
+                setEmail('');
+                setPassword('');
+            }
+        } catch (error) {
+            setMessage(`Անսպասելի սխալ: ${error.message}`);
+        } finally {
+            setLoading(false); // Ամեն դեպքում անջատում ենք loading-ը
+        }
+    };
+
+    const handleSubmit = isSignIn ? handleSignIn : handleSignUp;
 
     if (!isOpen) return null;
 
@@ -115,7 +149,6 @@ const RegistrationModal = ({ isOpen, onClose }) => {
             <div
                 style={{
                     ...modalContentStyle,
-                    // Դինամիկ ոճեր
                     boxShadow: `0 0 20px ${currentNeonColor}, 0 0 40px ${currentNeonColor}`,
                     border: `2px solid ${currentNeonColor}`
                 }}
@@ -140,7 +173,6 @@ const RegistrationModal = ({ isOpen, onClose }) => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         className="modal-input"
-                        // Ինտերակտիվ ոճերը կիրառելու համար սահմանում ենք CSS փոփոխականներ
                         style={{ ...inputStyle, '--input-shadow-color': currentNeonColor }}
                     />
                     {/* INPUT - Գաղտնաբառ */}
