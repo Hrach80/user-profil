@@ -1,0 +1,234 @@
+/* ------------------------------
+   Գլոբալ թեմա
+------------------------------ */
+:root {
+    --dark-bg: #0a0a0a;
+    --light-text: #f1f1f1;
+    --neon-blue: #00e0ff;
+    --neon-purple: #b400ff;
+    --neon-glow: 0 0 15px rgba(0, 224, 255, 0.7);
+    --font-main: 'Poppins', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-main);
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    overflow-x: hidden;
+}
+
+/* ------------------------------
+   Գլխավոր էջի կառուցվածք
+------------------------------ */
+.home-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #101020 0%, #060606 100%);
+    padding: 40px 0;
+}
+
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    width: 90%;
+    gap: 50px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 25px;
+    padding: 60px;
+    box-shadow: 0 0 25px rgba(0, 224, 255, 0.15);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease-in-out;
+}
+
+/* ------------------------------
+   Ձախ մաս՝ նկար և տեքստ
+------------------------------ */
+.image-section {
+    flex: 1;
+    text-align: center;
+}
+
+.image-style {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--neon-blue);
+    box-shadow: 0 0 30px rgba(0, 224, 255, 0.3);
+    transition: all 0.4s ease;
+}
+
+.image-style:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(0, 224, 255, 0.6);
+}
+
+.image-text {
+    margin-top: 20px;
+    color: #bdbdbd;
+    font-size: 1rem;
+    font-style: italic;
+}
+
+/* ------------------------------
+   Աջ մաս՝ տեքստ և կոճակ
+------------------------------ */
+.text-section {
+    flex: 1;
+}
+
+.header-style {
+    font-size: 2.4rem;
+    color: var(--neon-blue);
+    text-shadow: var(--neon-glow);
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.sub-text {
+    font-size: 1.1rem;
+    color: #cccccc;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    animation: fadeIn 1.4s ease-in-out;
+}
+
+/* ------------------------------
+   Նեոնային կոճակ
+------------------------------ */
+.neon-button {
+    background: transparent;
+    color: var(--neon-blue);
+    border: 2px solid var(--neon-blue);
+    border-radius: 12px;
+    padding: 14px 35px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.3);
+}
+
+.neon-button:hover {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 0 0 25px rgba(0, 224, 255, 0.7);
+    transform: scale(1.05);
+}
+
+/* Կոճակի ներքին փայլ */
+.neon-button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 224, 255, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.neon-button:hover::after {
+    opacity: 1;
+}
+
+/* ------------------------------
+   Անիմացիաներ
+------------------------------ */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ------------------------------
+   Ռեսպոնզիվ դիզայն
+------------------------------ */
+
+/* 💻 Միջին էկրաններ (լապտոպ, պլանշետ landscape) */
+@media (max-width: 1024px) {
+    .main-container {
+        flex-direction: column;
+        padding: 50px 40px;
+        gap: 40px;
+    }
+
+    .image-style {
+        width: 240px;
+        height: 240px;
+    }
+
+    .header-style {
+        font-size: 2rem;
+    }
+
+    .sub-text {
+        font-size: 1rem;
+    }
+}
+
+/* 📱 Փոքր էկրաններ (պլանշետ portrait, բջջային) */
+@media (max-width: 768px) {
+    .main-container {
+        width: 95%;
+        padding: 40px 25px;
+        text-align: center;
+    }
+
+    .text-section {
+        order: 2;
+    }
+
+    .image-section {
+        order: 1;
+    }
+
+    .image-style {
+        width: 200px;
+        height: 200px;
+    }
+
+    .header-style {
+        font-size: 1.8rem;
+    }
+
+    .sub-text {
+        font-size: 0.95rem;
+    }
+
+    .neon-button {
+        width: 80%;
+    }
+}
+
+/* 📱 Շատ փոքր էկրաններ */
+@media (max-width: 480px) {
+    .header-style {
+        font-size: 1.5rem;
+    }
+
+    .sub-text {
+        font-size: 0.9rem;
+    }
+
+    .image-style {
+        width: 180px;
+        height: 180px;
+    }
+}
