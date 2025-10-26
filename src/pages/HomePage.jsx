@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import RegistrationModal from '../components/RegistrationModal';
 
 const HRACYA_IMAGE_PATH = '/hrach.png';
+
+// ----------------------------------------------------
+// ՈՃԵՐ
+// ----------------------------------------------------
+
 const pageStyle = {
     display: 'flex',
     justifyContent: 'center',
@@ -9,12 +14,14 @@ const pageStyle = {
     minHeight: '100vh',
     padding: '20px',
 };
+
 const contentContainerStyle = {
     display: 'flex',
-    flexDirection: 'row',
+    flexWrap: 'wrap', 
     gap: '40px',
     maxWidth: '1000px',
     width: '100%',
+
     backgroundColor: 'var(--dark-surface)',
     borderRadius: 'var(--border-radius)',
     padding: '30px',
@@ -22,9 +29,9 @@ const contentContainerStyle = {
     border: '2px solid var(--neon-blue)',
     transition: 'box-shadow 0.5s ease-in-out',
 };
+
 const imageContainerStyle = {
     flex: 1,
-    minWidth: '300px',
     background: 'linear-gradient(45deg, rgba(0, 255, 194, 0.05), rgba(0, 191, 255, 0.05))',
     padding: '15px',
     borderRadius: 'var(--border-radius)',
@@ -54,46 +61,69 @@ const modalSectionStyle = {
     padding: '20px',
 };
 
+// ----------------------------------------------------
+// CSS ԻՆՏԵՐԱԿՏԻՎՈՒԹՅԱՆ և ՌԵՍՊՈՆՍԻՎՈՒԹՅԱՆ ԿԱՆՈՆՆԵՐ
+// ----------------------------------------------------
 
 const InteractiveStyles = `
-    /* Hover ազդեցություն հիմնական կոնտեյների վրա */
+    /* ... Hover ազդեցությունները ... */
     .content-container:hover {
         box-shadow: 0 0 40px var(--neon-blue), 0 0 80px rgba(0, 191, 255, 0.4);
     }
-    
-    /* Hover ազդեցություն նկարի վրա */
     .hrach-image {
-        /* Անիմացիայի մուտքը */
         transform: scale(1);
     }
     .hrach-image:hover {
-        transform: scale(1.03) rotate(1deg); /* Փոքր շարժում և թեքություն */
+        transform: scale(1.03) rotate(1deg);
         box-shadow: 0 0 15px var(--neon-pink), 0 0 35px var(--neon-pink), 0 0 50px rgba(255, 0, 119, 0.6);
         cursor: pointer;
     }
 
-    /* Ռեսպոնզիվ ոճեր */
+    /* ՌԵՍՊՈՆՍԻՎ ՈՃԵՐ - ՈՒՂՂՈՒՄ */
+    /* Լռելյայն Flex Direction մեծ էկրանների համար */
+    .content-container {
+        flex-direction: row; 
+    }
+
     @media (max-width: 900px) {
         .content-container {
+            /* ԿԱՐԵՎՈՐ ՈՒՂՂՈՒՄ: Դառնում է ուղղահայաց */
             flex-direction: column; 
+            align-items: center; 
             padding: 25px;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
         }
+        
         .image-container, .modal-section {
-            min-width: unset;
+            /* Կոնտեյներները դարձնում ենք 100% լայնություն */
+            flex: 1 1 100%; 
+            min-width: 100%; 
             width: 100%;
         }
+        
         .hrach-image {
             max-width: 80%; 
             height: auto;
+            display: block;
+            margin: 0 auto;
         }
     }
     
     @media (max-width: 500px) {
+        .content-container {
+             padding: 15px; 
+        }
         .hrach-image {
-            max-width: 100%;
+            max-width: 90%;
         }
     }
 `;
+
+// ----------------------------------------------------
+// ԿՈՄՊՈՆԵՆՏ
+// ----------------------------------------------------
 
 const HomePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -114,11 +144,12 @@ const HomePage = () => {
                         marginTop: '20px',
                         textAlign: 'center',
                         color: 'var(--neon-pink)',
-                        textShadow: 'var(--shadow-pink)' 
+                        textShadow: 'var(--shadow-pink)'
                     }}>
                         Մուտք գործեք ինքնակենսագրությունը տեսնելու համար
                     </h3>
                 </div>
+
                 <div style={modalSectionStyle} className="modal-section">
                     <h2 style={{ color: 'var(--neon-green)', textShadow: 'var(--shadow-green)' }}>
                         ԲԱՐԻ ԳԱԼՈՒՍՏ!
