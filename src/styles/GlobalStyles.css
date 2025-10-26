@@ -3,7 +3,7 @@
 :root {
     --dark-bg: #121212;
     --neon-blue: #00ffff;
-    --neon-pink: #ff0800;
+    --neon-pink: #ffa200;
     --neon-green: #39ff14;
     --text-color: #f0f0f0;
     --shadow-blue: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
