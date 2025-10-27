@@ -93,7 +93,7 @@ body {
 
 .skill-badge:hover {
     background: var(--neon-blue);
-    color: #000;
+    color: white;
     box-shadow: var(--shadow-blue);
     transform: scale(1.1) rotate(-3deg);
 }

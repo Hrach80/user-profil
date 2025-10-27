@@ -6,7 +6,7 @@ import '../pages/ProfilePage.css';
 const HRACYA_IMAGE_PATH = '/hrach.png';
 
 const profileData = {
-    title: "Հրաչյա Մնացականի Վաղարշակյան / Պրոֆիլի Ամփոփում",
+    title: "Հրաչյա Մնացականի Վաղարշակյան",
     image: HRACYA_IMAGE_PATH,
     bio: [
         {
