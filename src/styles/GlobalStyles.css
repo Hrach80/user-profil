@@ -1,31 +1,18 @@
-/* ==================================== */
-/* 1. ԳԼՈԲԱԼ ՓՈՓՈԽԱԿԱՆՆԵՐ (Թեմա) */
-/* ==================================== */
-:root {
-    /* Կիբեր Գույներ */
-    --neon-green: #00ffc2;
-    --neon-blue: #00bfff;
-    --neon-pink: #ff0077;
 
-    /* Ֆոնի Գույներ */
+:root {
+    --neon-green: #00ffc2;
+    --neon-blue: #ff0303;
+    --neon-pink: #ff0077;
     --dark-bg: #121212;
     --dark-surface: #1e1e1e;
     --text-color: #e0e0e0;
-    /* Բաց մոխրագույն տեքստ */
-
-    /* Էֆֆեկտներ */
     --shadow-green: 0 0 10px var(--neon-green);
     --shadow-blue: 0 0 10px var(--neon-blue);
     --shadow-pink: 0 0 10px var(--neon-pink);
     --border-radius: 8px;
-
-    /* Անցումներ */
     --transition-speed: 0.3s;
 }
 
-/* ==================================== */
-/* 2. ԲԱԶԱՅԻՆ ՈՃԵՐ (Reset) */
-/* ==================================== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -34,13 +21,11 @@
 
 body {
     font-family: 'Consolas', 'Courier New', monospace;
-    /* Կիբեր ֆոնտ */
     background-color: var(--dark-bg);
     color: var(--text-color);
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Կանխում է հորիզոնական scroll-ը */
 }
 
 a {
@@ -53,7 +38,6 @@ a:hover {
     color: var(--neon-blue);
 }
 
-/* Գլխագրերի ոճավորում */
 h1,
 h2,
 h3 {
@@ -61,11 +45,6 @@ h3 {
     letter-spacing: 1px;
 }
 
-/* ==================================== */
-/* 3. ԱՆԻՄԱՑԻԱՆԵՐ ԵՎ ԻՆՏԵՐԱԿՏԻՎՈՒԹՅՈՒՆ */
-/* ==================================== */
-
-/* Ֆոնի Թարթումի Անիմացիա (Օգտագործելու ենք Header-ի կամ Footer-ի վրա) */
 @keyframes neon-flicker {
 
     0%,
@@ -90,7 +69,6 @@ h3 {
     }
 }
 
-/* Կոճակների Ընդհանուր Ոճ */
 .neon-button {
     background: transparent;
     cursor: pointer;
@@ -100,8 +78,6 @@ h3 {
     text-transform: uppercase;
     transition: all var(--transition-speed);
     border-radius: var(--border-radius);
-
-    /* Լռելյայն դնում ենք կանաչ նեոն */
     color: var(--neon-green);
     border: 2px solid var(--neon-green);
     box-shadow: 0 0 10px var(--neon-green);
@@ -122,8 +98,6 @@ h3 {
     color: #999;
     border-color: #999;
 }
-
-/* Կոմպոնենտի Ընդհանուր Կիբեր Տեսք */
 .cyber-panel {
     background-color: var(--dark-surface);
     border: 1px solid rgba(0, 255, 194, 0.2);
@@ -133,17 +107,6 @@ h3 {
     margin-bottom: 20px;
 }
 
-/* ==================================== */
-/* 4. ՄՈԴԱԼԻ ՈՃԵՐԻ ԹԱՐՄԱՑՈՒՄ */
-/* ==================================== */
-/* Քանի որ մոդալի ոճերը գրված են inline-ով, այստեղ ավելի շատ գլոբալ ոճեր են: */
-
-/* ==================================== */
-/* 5. ՌԵՍՊՈՆԶԻՎ ՈՃԵՐ (Responsive Media Queries) */
-/* ==================================== */
-
-/* Փոքր Էկրաններ (Հեռախոսներ) */
-/* Փոքր Էկրաններ (Հեռախոսներ) */
 @media (max-width: 600px) {
     body {
         font-size: 15px;
@@ -155,7 +118,6 @@ h3 {
     }
 }
 
-/* Միջին Էկրաններ (Պլանշետներ) */
 @media (min-width: 601px) and (max-width: 1024px) {
     body {
         font-size: 16px;
@@ -171,7 +133,6 @@ h3 {
     }
 }
 
-/* Մեծ Էկրաններ (Desktop) */
 @media (min-width: 1025px) {
     body {
         font-size: 18px;

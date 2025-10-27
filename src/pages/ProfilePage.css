@@ -1,0 +1,182 @@
+:root {
+    --neon-pink: #ff4dd2;
+    --neon-blue: #4db8ff;
+    --neon-green: #39ff14;
+    --dark-bg: #0a0a0f;
+    --text-color: #eaeaea;
+
+    --shadow-pink: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+    --shadow-green: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+    --shadow-blue: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+}
+
+/* --- Ընդհանուր ոճեր --- */
+body {
+    display: flex;
+    justify-content: center;
+    background-color: var(--dark-bg);
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-top: 50px;
+
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+.profile-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--neon-blue);
+    box-shadow: var(--shadow-blue);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.profile-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px var(--neon-blue), 0 0 40px var(--neon-pink);
+}
+
+.profile-bio {
+    max-width: 650px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.profile-bio:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.profile-bio h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    text-shadow: var(--shadow-blue);
+}
+
+.profile-bio p {
+    line-height: 1.7;
+    color: #d8d8d8;
+}
+
+/* --- Հմտությունների բաժին --- */
+.skills-container {
+    margin-top: 40px;
+}
+
+.skill-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--neon-blue);
+    color: var(--neon-blue);
+    border-radius: 12px;
+    padding: 10px 18px;
+    margin: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+}
+
+.skill-badge:hover {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: var(--shadow-blue);
+    transform: scale(1.1) rotate(-3deg);
+}
+
+/* --- Կոճակ --- */
+.neon-button {
+    color: var(--neon-pink);
+    background: transparent;
+    border: 2px solid var(--neon-pink);
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-shadow: var(--shadow-pink);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.neon-button:hover {
+    background: var(--neon-pink);
+    color: #000;
+    box-shadow: var(--shadow-pink);
+    transform: scale(1.05);
+}
+
+/* --- Անիմացիաներ --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Ռեսպոնսիվություն --- */
+@media (max-width: 1024px) {
+    .profile-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-image {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-bio {
+        padding: 20px;
+        max-width: 90%;
+    }
+
+    .profile-bio h3 {
+        font-size: 1.2rem;
+    }
+
+    .skill-badge {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+
+    .neon-button {
+        padding: 8px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-image {
+        width: 180px;
+        height: 180px;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+
+    .profile-bio {
+        font-size: 0.9rem;
+    }
+}

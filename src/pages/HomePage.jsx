@@ -81,7 +81,7 @@ const HomePage = () => {
                     </h2>
                     <p className="sub-text">
                         Գրանցվեք և մուտք գործեք պրոֆիլ։
-                        <strong>(Կայքի Bekend մասը ստեղծվել է supabase-ի միջոցով )</strong>
+                        <strong>(Կայքի "BACKEND" մասը ստեղծվել է supabase-ի միջոցով )</strong>
                     </p>
 
                     <button
